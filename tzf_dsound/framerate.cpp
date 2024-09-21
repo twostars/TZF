@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Zestiria "Fix".
  *
  * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -102,8 +102,8 @@ public:
     time.QuadPart = 0ULL;
     last.QuadPart = 0ULL;
 
-    last.QuadPart = start.QuadPart - (ms / 1000.0) * freq.QuadPart;
-    next.QuadPart = start.QuadPart + (ms / 1000.0) * freq.QuadPart;
+    last.QuadPart = static_cast<LONGLONG> (start.QuadPart - (ms / 1000.0) * freq.QuadPart);
+    next.QuadPart = static_cast<LONGLONG> (start.QuadPart + (ms / 1000.0) * freq.QuadPart);
   }
 
   void wait (void) {
@@ -122,11 +122,11 @@ public:
 
     if (restart) {
       frames         = 0;
-      start.QuadPart = time.QuadPart + (ms / 1000.0) * (double)freq.QuadPart;
+      start.QuadPart = static_cast<LONGLONG> (time.QuadPart + (ms / 1000.0) * (double)freq.QuadPart);
       restart        = false;
     }
 
-    next.QuadPart = (start.QuadPart + (double)frames * (ms / 1000.0) * (double)freq.QuadPart);
+    next.QuadPart = static_cast<LONGLONG> ((start.QuadPart + (double)frames * (ms / 1000.0) * (double)freq.QuadPart));
 
     if (next.QuadPart > 0ULL) {
       // If available (Windows 7+), wait on the swapchain
@@ -289,7 +289,7 @@ QueryPerformanceCounter_Detour (_Out_ LARGE_INTEGER *lpPerformanceCount)
   QueryPerformanceFrequency (&freq);
 
   // Mess with the numbers slightly to prevent scheduling from wreaking havoc
-  lpPerformanceCount->QuadPart += (double)freq.QuadPart * ((double)tzf::FrameRateFix::target_fps / 1000.0);
+  lpPerformanceCount->QuadPart += static_cast<LONGLONG> ((double)freq.QuadPart * ((double)tzf::FrameRateFix::target_fps / 1000.0));
 
   memcpy (&last_perfCount, lpPerformanceCount, sizeof (LARGE_INTEGER));
 
@@ -396,9 +396,9 @@ void
 __declspec(naked)
 TZF_LuaHook (void)
 {
-  char   *name;
-  size_t *pSz;
-  char  **pBuffer;
+  char    *name;
+  size_t  *pSz;
+  uint8_t **pBuffer;
 
   __asm
   {
@@ -890,10 +890,10 @@ tzf::FrameRateFix::CalcTickScale (double elapsed_ms)
   const double tick_ms  = (1.0 / 60.0) * 1000.0;
   const double inv_rate =  1.0 / target_fps;
 
-  long scale = std::min (std::max (elapsed_ms / tick_ms, 1.0), 7.0);
+  long scale = static_cast<long> (std::min (std::max (elapsed_ms / tick_ms, 1.0), 7.0));
 
   if (scale > 6)
-    scale = std::max (inv_rate / (1.0 / 60.0), 1.0);
+    scale = static_cast<long> (std::max (inv_rate / (1.0 / 60.0), 1.0));
 
   return scale;
 }

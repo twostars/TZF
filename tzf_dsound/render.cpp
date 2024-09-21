@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tales of Zestiria "Fix".
 *
 * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -122,17 +122,17 @@ TZF_ComputeAspectCoeffs (float& x, float& y, float& xoff, float& yoff)
 
   // Wider
   if (config.render.aspect_ratio > 1.7777f) {
-    int width = (16.0f / 9.0f) * tzf::RenderFix::height;
+    int width = static_cast<int> ((16.0f / 9.0f) * tzf::RenderFix::height);
     int x_off = (tzf::RenderFix::width - width) / 2;
 
     x    = (float)tzf::RenderFix::width / (float)width;
-    xoff = x_off;
+    xoff = (float)x_off;
   } else {
-    int height = (9.0f / 16.0f) * tzf::RenderFix::width;
+    int height = static_cast<int> ((9.0f / 16.0f) * tzf::RenderFix::width);
     int y_off  = (tzf::RenderFix::height - height) / 2;
 
     y    = (float)tzf::RenderFix::height / (float)height;
-    yoff = y_off;
+    yoff = (float)y_off;
   }
 }
 
@@ -706,11 +706,11 @@ D3D9EndScene_Detour (IDirect3DDevice9* This)
     D3DCOLOR color = 0xff000000;
 
     int width = tzf::RenderFix::width;
-    int height = (9.0f / 16.0f) * width;
+    int height = static_cast<int> ((9.0f / 16.0f) * width);
 
     // We can't do this, so instead we need to sidebar the stuff
-    if (height > tzf::RenderFix::height) {
-      width  = (16.0f / 9.0f) * tzf::RenderFix::height;
+    if (height > static_cast<int> (tzf::RenderFix::height)) {
+      width  = static_cast<int> ((16.0f / 9.0f) * tzf::RenderFix::height);
       height = tzf::RenderFix::height;
     }
 
@@ -1028,18 +1028,18 @@ D3D9SetScissorRect_Detour (IDirect3DDevice9* This,
     float left_ndc  = 2.0f * ((float)pRect->left  / (float)tzf::RenderFix::width) - 1.0f;
     float right_ndc = 2.0f * ((float)pRect->right / (float)tzf::RenderFix::width) - 1.0f;
 
-    int width = (16.0f / 9.0f) * tzf::RenderFix::height;
+    int width = static_cast<int> ((16.0f / 9.0f) * tzf::RenderFix::height);
 
-    fixed_scissor.left  = (left_ndc  * width + width) / 2.0f + x_off;
-    fixed_scissor.right = (right_ndc * width + width) / 2.0f + x_off;
+    fixed_scissor.left  = static_cast<LONG> ((left_ndc  * width + width) / 2.0f + x_off);
+    fixed_scissor.right = static_cast<LONG> ((right_ndc * width + width) / 2.0f + x_off);
   } else {
     float top_ndc    = 2.0f * ((float)pRect->top    / (float)tzf::RenderFix::height) - 1.0f;
     float bottom_ndc = 2.0f * ((float)pRect->bottom / (float)tzf::RenderFix::height) - 1.0f;
 
-    int height = (9.0f / 16.0f) * tzf::RenderFix::width;
+    int height = static_cast<int> ((9.0f / 16.0f) * tzf::RenderFix::width);
 
-    fixed_scissor.top    = (top_ndc    * height + height) / 2.0f + y_off;
-    fixed_scissor.bottom = (bottom_ndc * height + height) / 2.0f + y_off;
+    fixed_scissor.top    = static_cast<LONG> ((top_ndc    * height + height) / 2.0f + y_off);
+    fixed_scissor.bottom = static_cast<LONG> ((bottom_ndc * height + height) / 2.0f + y_off);
   }
 
   return D3D9SetScissorRect_Original (This, &fixed_scissor);
@@ -1100,10 +1100,10 @@ D3D9SetViewport_Detour (IDirect3DDevice9* This,
     x_off   = 0.0f;   y_off = 0.0f;
     //TZF_ComputeAspectScale (scale_x, scale_y, x_off, y_off);
 
-    rescaled_post_proc.Width  = tzf::RenderFix::width  * config.render.postproc_ratio * scale_x;
-    rescaled_post_proc.Height = tzf::RenderFix::height * config.render.postproc_ratio * scale_y;
-    rescaled_post_proc.X       += x_off;
-    rescaled_post_proc.Y       += y_off;
+    rescaled_post_proc.Width  = static_cast<DWORD> (tzf::RenderFix::width  * config.render.postproc_ratio * scale_x);
+    rescaled_post_proc.Height = static_cast<DWORD> (tzf::RenderFix::height * config.render.postproc_ratio * scale_y);
+    rescaled_post_proc.X     += static_cast<DWORD> (x_off);
+    rescaled_post_proc.Y     += static_cast<DWORD> (y_off);
 
     return D3D9SetViewport_Original (This, &rescaled_post_proc);
   }
@@ -1164,11 +1164,11 @@ TZF_AdjustViewport (IDirect3DDevice9* This, bool UI)
   vp9_orig.Height = tzf::RenderFix::height;
 
   DWORD width = vp9_orig.Width;
-  DWORD height = (9.0f / 16.0f) * vp9_orig.Width;
+  DWORD height = static_cast<DWORD> ((9.0f / 16.0f) * vp9_orig.Width);
 
   // We can't do this, so instead we need to sidebar the stuff
   if (height > vp9_orig.Height) {
-    width  = (16.0f / 9.0f) * vp9_orig.Height;
+    width  = static_cast<DWORD> ((16.0f / 9.0f) * vp9_orig.Height);
     height = vp9_orig.Height;
   }
 
@@ -2148,7 +2148,7 @@ EnumConstant ( tzf::RenderFix::shader_tracking_s* pShader,
   D3DXCONSTANT_DESC constant_desc;
   if (SUCCEEDED (pConstantTable->GetConstantDesc (hConstant, &constant_desc, &one)))
   {
-    strncpy (constant.Name, constant_desc.Name, 128);
+    strncpy_s (constant.Name, constant_desc.Name, 128);
     constant.Class         = constant_desc.Class;
     constant.Type          = constant_desc.Type;
     constant.RegisterSet   = constant_desc.RegisterSet;

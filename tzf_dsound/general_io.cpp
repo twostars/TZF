@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Zestiria "Fix".
  *
  * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -62,14 +62,14 @@ public:
   bool isTracedName (std::wstring name) {
     bool trace = false;
 
-    for (int i = 0; i < trace_names_.size (); i++) {
+    for (size_t i = 0; i < trace_names_.size (); i++) {
       if (name.find (trace_names_ [i]) != std::wstring::npos) {
         trace = true;
         break;
       }
     }
 
-    for (int i = 0; i < ignore_names_.size (); i++) {
+    for (size_t i = 0; i < ignore_names_.size (); i++) {
       if (name.find (ignore_names_ [i]) != std::wstring::npos) {
         trace = false;
         break;

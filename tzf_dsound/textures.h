@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Zestiria "Fix".
  *
  * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -570,7 +570,7 @@ struct tzf_tex_record_s {
   unsigned int               archive = std::numeric_limits <unsigned int>::max ();
            int               fileno  = 0UL;
   enum     tzf_load_method_t method  = DontCare;
-           size_t            size    = 0UL;
+           size_t            size    = 0U;
 };
 
 std::vector <std::wstring>

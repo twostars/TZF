@@ -1,4 +1,4 @@
-// ImGui - standalone example application for DirectX 9
+﻿// ImGui - standalone example application for DirectX 9
 // If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
 
 #define NOMINMAX
@@ -152,14 +152,14 @@ TZFix_GamepadConfigDlg (void)
                    "%ws",
                      config.textures.gamepad.c_str () );
 
-      for (int i = 0; i < gamepads_.size (); i++)
+      for (size_t i = 0; i < gamepads_.size (); i++)
       {
         gamepads.array.push_back (
           _strdup ( gamepads_ [i].c_str () )
         );
 
-        if (! stricmp (gamepads.array [i], current_gamepad))
-          gamepads.sel = i;
+        if (! _stricmp (gamepads.array [i], current_gamepad))
+          gamepads.sel = static_cast<int> (i);
       }
     }
   }
@@ -174,7 +174,7 @@ TZFix_GamepadConfigDlg (void)
       {
         wchar_t pad [128] = { L'\0' };
 
-        swprintf (pad, L"%hs", gamepads.array [gamepads.sel]);
+        swprintf (pad, 128, L"%hs", gamepads.array [gamepads.sel]);
 
         config.textures.gamepad             = pad;
         tzf::RenderFix::need_reset.textures = true;
@@ -327,7 +327,7 @@ TZFix_DrawConfigUI (void)
               512,
                 u8"Avg milliseconds per-frame: %6.3f  (Target: %6.3f)\n"
                 u8"    Extreme frametimes:      %6.3f min, %6.3f max\n\n\n\n"
-                u8"Variation:  %8.5f ms        %.1f FPS  �  %3.1f frames",
+                u8"Variation:  %8.5f ms        %.1f FPS  ±  %3.1f frames",
                   sum / 120.0f, target_frametime,
                     min, max, max - min,
                       1000.0f / (sum / 120.0f), (max - min) / (1000.0f / (sum / 120.0f)) );

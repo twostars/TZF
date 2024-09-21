@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Zestiria "Fix".
  *
  * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -73,8 +73,8 @@ CalcCursorPos (LPPOINT pPoint)
 
   TZF_ComputeAspectCoeffs (xscale, yscale, xoff, yoff);
 
-  pPoint->x = (pPoint->x - xoff) * xscale;
-  pPoint->y = (pPoint->y - yoff) * yscale;
+  pPoint->x = static_cast<LONG> ((pPoint->x - xoff) * xscale);
+  pPoint->y = static_cast<LONG> ((pPoint->y - yoff) * yscale);
 
   return *pPoint;
 }

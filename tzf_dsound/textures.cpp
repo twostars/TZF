@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Zestiria "Fix".
  *
  * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -934,8 +934,8 @@ D3D9CreateTexture_Detour (IDirect3DDevice9   *This,
       Height == 256 && Usage == D3DUSAGE_RENDERTARGET)
   {
     if (config.render.postproc_ratio > 0.0f) {
-      Width  = tzf::RenderFix::width  * config.render.postproc_ratio;
-      Height = tzf::RenderFix::height * config.render.postproc_ratio;
+      Width  = static_cast<UINT> (tzf::RenderFix::width  * config.render.postproc_ratio);
+      Height = static_cast<UINT> (tzf::RenderFix::height * config.render.postproc_ratio);
     }
   }
 
@@ -1275,11 +1275,11 @@ public:
     SetEvent (control_.shutdown);
   }
 
-  size_t bytesLoaded(void) {
+  ULONGLONG bytesLoaded(void) {
     return InterlockedExchangeAdd (&bytes_loaded_, 0ULL);
   }
 
-  int    jobsRetired  (void) {
+  LONG      jobsRetired(void) {
     return InterlockedExchangeAdd (&jobs_retired_, 0L);
   }
 
@@ -2513,9 +2513,13 @@ D3DXCreateTextureFromFileInMemoryEx_Detour (
                                 GetFileExInfoStandard,
                                   &file_attrib_data );
 
+        ULONGLONG size64 = ULARGE_INTEGER {
+          file_attrib_data.nFileSizeLow,
+          file_attrib_data.nFileSizeHigh }
+        .QuadPart;
+
         tzf_tex_record_s rec;
-        rec.size    =  ULARGE_INTEGER { file_attrib_data.nFileSizeLow,
-                                          file_attrib_data.nFileSizeHigh }.QuadPart;
+        rec.size    =  static_cast<size_t>( size64 ); // textures shouldn't need to be big enough to require 64 bits
         rec.archive = -1;
         rec.method  =  Blocking;
 
@@ -2648,7 +2652,7 @@ D3DXCreateTextureFromFileInMemoryEx_Detour (
       load_op->pSrcData    = new uint8_t [SrcDataSize];
       load_op->SrcDataSize = SrcDataSize;
 
-      swprintf (load_op->wszFilename, L"Resample_%x.dds", checksum);
+      swprintf (load_op->wszFilename, MAX_PATH, L"Resample_%x.dds", checksum);
 
       memcpy (load_op->pSrcData, pSrcData, SrcDataSize);
 
@@ -4044,7 +4048,7 @@ TZF_RefreshDataSources (void)
                 SzArEx_GetFileNameUtf16 (&arc, i, (UInt16 *)wszEntry);
 
                 // Truncate to 32-bits --> there's no way in hell a texture will ever be >= 2 GiB
-                size_t fileSize = SzArEx_GetFileSize (&arc, i);
+                size_t fileSize = static_cast<size_t> (SzArEx_GetFileSize (&arc, i));
 
                 wchar_t* wszFullName =
                   _wcslwr (_wcsdup (wszEntry));
@@ -4080,7 +4084,7 @@ TZF_RefreshDataSources (void)
                     method = Blocking;
 
                   tzf_tex_record_s rec;
-                  rec.size    = (uint32_t)fileSize;
+                  rec.size    = fileSize;
                   rec.archive = archive;
                   rec.fileno  = i;
                   rec.method  = method;

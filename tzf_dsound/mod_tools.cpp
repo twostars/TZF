@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Berseria "Fix".
  *
  * Tales of Berseria "Fix" is free software : you can redistribute it
@@ -169,15 +169,15 @@ TZF_DrawFileList (bool& can_scroll)
 
   if (sources.size ())
   {
-    static      int last_sel = 0;
-    static bool sel_changed  = false;
+    static  size_t last_sel = 0;
+    static bool sel_changed = false;
   
     if (sel != last_sel)
       sel_changed = true;
   
     last_sel = sel;
   
-    for ( int line = 0; line < sources.size (); line++)
+    for ( size_t line = 0; line < sources.size (); line++)
     {
       if (line == sel)
       {
@@ -393,11 +393,11 @@ TZF_LiveShaderClassView (tzf_shader_class shader_type, bool& can_scroll)
   if (shaders.size ())
   {
     struct {
-      int  last_sel    = 0;
-      bool sel_changed = false;
+      size_t last_sel   = 0;
+      bool sel_changed  = false;
     } static shader_state [3];
 
-    int&  last_sel    = shader_state [(int)shader_type].last_sel;
+    size_t&  last_sel = shader_state [(int)shader_type].last_sel;
     bool& sel_changed = shader_state [(int)shader_type].sel_changed;
 
     if (list->sel != last_sel)
@@ -405,9 +405,9 @@ TZF_LiveShaderClassView (tzf_shader_class shader_type, bool& can_scroll)
 
     last_sel = list->sel;
 
-    for ( int line = 0; line < shaders.size (); line++ )
+    for ( size_t line = 0; line < shaders.size (); line++ )
     {
-      if (line == list->sel)
+      if (static_cast<int> (line) == list->sel)
       {
         bool selected    = true;
 
@@ -430,7 +430,7 @@ TZF_LiveShaderClassView (tzf_shader_class shader_type, bool& can_scroll)
         if (ImGui::Selectable (list->contents [line].c_str (), &selected))
         {
           sel_changed    = true;
-          list->sel      =  line;
+          list->sel      = static_cast<int> (line);
           list->last_sel = (uint32_t)shaders [list->sel];
           tracker->crc32 = (uint32_t)shaders [list->sel];
         }
@@ -694,19 +694,19 @@ TZF_LiveVertexStreamView (bool& can_scroll)
   if (buffers.size ())
   {
     struct {
-      int  last_sel    = 0;
-      bool sel_changed = false;
+      size_t  last_sel    = 0;
+      bool    sel_changed = false;
     } static stream [3];
 
-    int&  last_sel    = stream [0].last_sel;
-    bool& sel_changed = stream [0].sel_changed;
+    size_t& last_sel    = stream [0].last_sel;
+    bool&   sel_changed = stream [0].sel_changed;
 
     if (list->sel != last_sel)
       sel_changed = true;
 
     last_sel = list->sel;
 
-    for ( int line = 0; line < buffers.size (); line++ )
+    for ( size_t line = 0; line < buffers.size (); line++ )
     {
       if (line == list->sel)
       {
@@ -731,7 +731,7 @@ TZF_LiveVertexStreamView (bool& can_scroll)
         if (ImGui::Selectable (list->contents [line].c_str (), &selected))
         {
           sel_changed            = true;
-          list->sel              =  line;
+          list->sel              = static_cast<int> (line);
           list->last_sel         = (uintptr_t)buffers [list->sel];
           tracker->vertex_buffer =            buffers [list->sel];
         }
@@ -938,7 +938,7 @@ TZFix_TextureModDlg (void)
 
    if (textures_used_last_dump.size ())
    {
-     static      int last_sel = 0;
+     static      size_t last_sel = 0;
      static bool sel_changed  = false;
 
      if (sel != last_sel)
@@ -946,7 +946,7 @@ TZFix_TextureModDlg (void)
 
      last_sel = sel;
 
-     for ( int line = 0; line < textures_used_last_dump.size (); line++)
+     for ( size_t line = 0; line < textures_used_last_dump.size (); line++)
      {
        if (line == sel)
        {
@@ -967,7 +967,7 @@ TZFix_TextureModDlg (void)
          if (ImGui::Selectable (list_contents[line].c_str (), &selected))
          {
            sel_changed = true;
-           tex_dbg_idx                 =  line;
+           tex_dbg_idx                 =  static_cast<uint32_t> (line);
            sel                         =  line;
            debug_tex_id                =  textures_used_last_dump [line];
          }
@@ -1242,7 +1242,7 @@ TZFix_TextureModDlg (void)
 
    if (render_textures.size ())
    {
-     static      int last_sel = 0;
+     static      size_t last_sel = 0;
      static bool sel_changed  = false;
 
      if (sel != last_sel)
@@ -1250,7 +1250,7 @@ TZFix_TextureModDlg (void)
 
      last_sel = sel;
 
-     for ( int line = 0; line < render_textures.size (); line++ )
+     for ( size_t line = 0; line < render_textures.size (); line++ )
      {
        D3DSURFACE_DESC desc;
 

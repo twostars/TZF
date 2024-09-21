@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Zestiria "Fix".
  *
  * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -82,8 +82,6 @@ S_CALLTYPE
 SteamVideo_Detour (void)
 {
   ISteamVideo* pVideo = SteamVideo_Original ();
-
-  int x;
 
   // Recent changes to SteamAPI store a non-zero value in the int* passed to
   //   IsBroadcasting (...) even if the return is false.  (4/17/17)
