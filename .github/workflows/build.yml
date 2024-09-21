@@ -1,0 +1,42 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: MSBuild
+
+on: [push, pull_request]
+
+env:
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  SPECIAL_K_BUILD_CONFIG: TZFix
+  SPECIAL_K_PLATFORM: x86
+  SPECIAL_K_SOLUTION: deps\SpecialK\SpecialK.sln
+  TZF_BUILD_CONFIG: Release
+  TZF_PLATFORM: x86
+  TZF_SOLUTION: tzf_dsound.sln
+  BIN_DIR: bin\
+  DXSDK_DIR: deps\microsoft-directx-sdk\
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build Special K
+      working-directory: ${{ github.workspace }}
+      run: msbuild /m /p:Configuration="${{env.SPECIAL_K_BUILD_CONFIG}}" /p:Platform="${{env.SPECIAL_K_PLATFORM}}" /p:OutDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" "${{env.SPECIAL_K_SOLUTION}}"
+      
+    - name: Build TZF
+      working-directory: ${{ github.workspace }}
+      run: msbuild /m /p:Configuration="${{env.TZF_BUILD_CONFIG}}" /p:Platform="${{env.TZF_PLATFORM}}" /p:TalesOfZestiriaDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" "${{env.TZF_SOLUTION}}"
+      

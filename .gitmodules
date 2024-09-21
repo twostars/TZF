@@ -1,3 +1,6 @@
 [submodule "deps/SpecialK"]
 	path = deps/SpecialK
 	url = https://github.com/twostars/SpecialK.git
+[submodule "deps/microsoft-directx-sdk"]
+	path = deps/microsoft-directx-sdk
+	url = https://github.com/twostars/microsoft-directx-sdk

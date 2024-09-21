@@ -38,13 +38,15 @@
     <TalesOfZestiriaDir Condition="'$(TalesOfZestiriaDir)'==''">C:\Program Files (x86)\Steam\steamapps\common\Tales of Zestiria\</TalesOfZestiriaDir>
     <TalesOfZestiriaDir Condition="$(TalesOfZestiriaDir.EndsWith('\'))">$(TalesOfZestiriaDir)\</TalesOfZestiriaDir>
     <SpecialKDir>$(SolutionDir)deps\SpecialK\</SpecialKDir>
+    <DXSDK_DIR Condition="'$(DXSDK_DIR)'==''">$(SolutionDir)deps\microsoft-directx-sdk\</TalesOfZestiriaDir>
+    <DXSDK_DIR Condition="$(DXSDK_DIR.EndsWith('\'))">$(DXSDK_DIR)\</TalesOfZestiriaDir>
     <TZFixConfiguration>TZFix</TZFixConfiguration>
     <TZFixPlatform>x86</TZFixPlatform>
   </PropertyGroup>
   <PropertyGroup>
-    <NMakeBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" "$(SpecialKDir)SpecialK.sln"</NMakeBuildCommandLine>
-    <NMakeCleanCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /t:Rebuild "$(SpecialKDir)SpecialK.sln"</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /t:Clean "$(SpecialKDir)SpecialK.sln"</NMakeReBuildCommandLine>
+    <NMakeBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" "$(SpecialKDir)SpecialK.sln"</NMakeBuildCommandLine>
+    <NMakeCleanCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" /t:Rebuild "$(SpecialKDir)SpecialK.sln"</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" /t:Clean "$(SpecialKDir)SpecialK.sln"</NMakeReBuildCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
