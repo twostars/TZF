@@ -1,4 +1,6 @@
 # TZF
+[![MSBuild](https://github.com/twostars/TZF/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/twostars/TZF/actions/workflows/build.yml)
+
 Tales of Zestiria "Fix" - Community Patch
 
     Copyright (c) 2015-2016
@@ -61,9 +63,9 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-================================================================================
 Portions of this software are Copyright (c) 2008-2009, Vyacheslav Patkov.
-================================================================================
+---
+
 Hacker Disassembler Engine 32 C
 Copyright (c) 2008-2009, Vyacheslav Patkov.
 All rights reserved.
