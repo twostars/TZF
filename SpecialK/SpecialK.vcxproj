@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{09D6531E-AD65-424F-A8E9-63415D5E1F7E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <TalesOfZestiriaDir Condition="'$(TalesOfZestiriaDir)'==''">C:\Program Files (x86)\Steam\steamapps\common\Tales of Zestiria\</TalesOfZestiriaDir>
+    <TalesOfZestiriaDir Condition="$(TalesOfZestiriaDir.EndsWith('\'))">$(TalesOfZestiriaDir)\</TalesOfZestiriaDir>
+    <SpecialKDir>$(SolutionDir)deps\SpecialK\</SpecialKDir>
+    <TZFixConfiguration>TZFix</TZFixConfiguration>
+    <TZFixPlatform>x86</TZFixPlatform>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NMakeBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" "$(SpecialKDir)SpecialK.sln"</NMakeBuildCommandLine>
+    <NMakeCleanCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /t:Rebuild "$(SpecialKDir)SpecialK.sln"</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /t:Clean "$(SpecialKDir)SpecialK.sln"</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

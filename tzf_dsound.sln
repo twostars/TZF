@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tzf_dsound", "tzf_dsound\tzf_dsound.vcxproj", "{66F0B0ED-F640-46EF-9E3A-0C524628D7AE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{09D6531E-AD65-424F-A8E9-63415D5E1F7E} = {09D6531E-AD65-424F-A8E9-63415D5E1F7E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpecialK", "SpecialK\SpecialK.vcxproj", "{09D6531E-AD65-424F-A8E9-63415D5E1F7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +16,12 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{66F0B0ED-F640-46EF-9E3A-0C524628D7AE}.Debug|x86.ActiveCfg = Release|Win32
-		{66F0B0ED-F640-46EF-9E3A-0C524628D7AE}.Debug|x86.Build.0 = Release|Win32
+		{66F0B0ED-F640-46EF-9E3A-0C524628D7AE}.Debug|x86.ActiveCfg = Debug|Win32
+		{66F0B0ED-F640-46EF-9E3A-0C524628D7AE}.Debug|x86.Build.0 = Debug|Win32
 		{66F0B0ED-F640-46EF-9E3A-0C524628D7AE}.Release|x86.ActiveCfg = Release|Win32
 		{66F0B0ED-F640-46EF-9E3A-0C524628D7AE}.Release|x86.Build.0 = Release|Win32
+		{09D6531E-AD65-424F-A8E9-63415D5E1F7E}.Debug|x86.ActiveCfg = Debug|Win32
+		{09D6531E-AD65-424F-A8E9-63415D5E1F7E}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
