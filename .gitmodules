@@ -1,0 +1,3 @@
+[submodule "deps/SpecialK"]
+	path = deps/SpecialK
+	url = https://github.com/SpecialKO/SpecialK
