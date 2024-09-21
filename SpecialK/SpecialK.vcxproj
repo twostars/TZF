@@ -38,8 +38,8 @@
     <TalesOfZestiriaDir Condition="'$(TalesOfZestiriaDir)'==''">C:\Program Files (x86)\Steam\steamapps\common\Tales of Zestiria\</TalesOfZestiriaDir>
     <TalesOfZestiriaDir Condition="$(TalesOfZestiriaDir.EndsWith('\'))">$(TalesOfZestiriaDir)\</TalesOfZestiriaDir>
     <SpecialKDir>$(SolutionDir)deps\SpecialK\</SpecialKDir>
-    <DXSDK_DIR Condition="'$(DXSDK_DIR)'==''">$(SolutionDir)deps\microsoft-directx-sdk\</TalesOfZestiriaDir>
-    <DXSDK_DIR Condition="$(DXSDK_DIR.EndsWith('\'))">$(DXSDK_DIR)\</TalesOfZestiriaDir>
+    <DXSDK_DIR Condition="'$(DXSDK_DIR)'==''">$(SolutionDir)deps\microsoft-directx-sdk\</DXSDK_DIR>
+    <DXSDK_DIR Condition="$(DXSDK_DIR.EndsWith('\'))">$(DXSDK_DIR)\</DXSDK_DIR>
     <TZFixConfiguration>TZFix</TZFixConfiguration>
     <TZFixPlatform>x86</TZFixPlatform>
   </PropertyGroup>
