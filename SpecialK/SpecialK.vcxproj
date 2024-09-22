@@ -44,9 +44,10 @@
     <TZFixPlatform>x86</TZFixPlatform>
   </PropertyGroup>
   <PropertyGroup>
-    <NMakeBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" "$(SpecialKDir)SpecialK.sln"</NMakeBuildCommandLine>
-    <NMakeCleanCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" /t:Rebuild "$(SpecialKDir)SpecialK.sln"</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" /t:Clean "$(SpecialKDir)SpecialK.sln"</NMakeReBuildCommandLine>
+    <NMakeBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /t:SpecialK /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" /p:BuildProjectReferences=false "$(SpecialKDir)SpecialK.sln"
+</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /t:SpecialK:Rebuild /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" /p:BuildProjectReferences=false "$(SpecialKDir)SpecialK.sln"</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(MSBuildBinPath)\msbuild.exe" /m /t:SpecialK:Clean /p:Configuration="$(TZFixConfiguration)" /p:Platform="$(TZFixPlatform)" /p:OutDir="$(TalesOfZestiriaDir)" /p:DXSDK_DIR="$(DXSDK_DIR)" /p:BuildProjectReferences=false "$(SpecialKDir)SpecialK.sln"</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
