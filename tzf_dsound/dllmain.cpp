@@ -170,6 +170,7 @@ DllThread (LPVOID user)
     //CoUninitialize ();
   }
 
+#if 0
   SK_UpdateSoftware_pfn SK_UpdateSoftware =
     (SK_UpdateSoftware_pfn)
       GetProcAddress ( hInjectorDLL,
@@ -188,6 +189,7 @@ DllThread (LPVOID user)
       }
     }
   }
+#endif
 
   return 0;
 }
