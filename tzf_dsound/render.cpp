@@ -20,8 +20,6 @@
 *
 **/
 
-#define NOMINMAX
-
 #include "render.h"
 #include "framerate.h"
 #include "config.h"

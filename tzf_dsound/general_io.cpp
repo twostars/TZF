@@ -127,7 +127,7 @@ GetFileNameFromHandle ( HANDLE   hFile,
                             (_MAX_PATH * sizeof (wchar_t)) );
   if (success) {
     wcsncpy_s ( pwszFileName,
-                  min (uiMaxLen,
+                  std::min<unsigned long> (uiMaxLen,
                     (pFni->FileNameLength / sizeof pFni->FileName [0]) + 1),
                      pFni->FileName,
                        _TRUNCATE );

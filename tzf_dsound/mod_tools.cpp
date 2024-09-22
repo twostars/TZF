@@ -22,8 +22,6 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#define NOMINMAX
-
 #include "DLL_VERSION.H"
 #include "imgui\imgui.h"
 

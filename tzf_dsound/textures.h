@@ -22,8 +22,6 @@
 #ifndef __TZFIX__TEXTURES_H__
 #define __TZFIX__TEXTURES_H__
 
-#define NOMINMAX
-
 #include "log.h"
 extern iSK_Logger* tex_log;
 
