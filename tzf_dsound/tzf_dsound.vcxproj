@@ -50,6 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TZF_DSOUND_EXPORTS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(TZF_RELEASE_BUILD)'!=''">TZF_RELEASE_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ExceptionHandling>Sync</ExceptionHandling>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -74,6 +75,9 @@
       <PerUserRedirection>true</PerUserRedirection>
       <AdditionalDependencies>%(AdditionalDependencies);$(TalesOfZestiriaDir)d3d9.lib</AdditionalDependencies>
     </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions Condition="'$(TZF_RELEASE_BUILD)'!=''">TZF_RELEASE_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

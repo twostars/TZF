@@ -8,9 +8,6 @@ name: MSBuild
 on: [push, pull_request]
 
 env:
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   SPECIAL_K_BUILD_CONFIG: TZFix
   SPECIAL_K_PLATFORM: x86
   SPECIAL_K_SOLUTION: deps\SpecialK\SpecialK.sln
@@ -21,22 +18,72 @@ env:
   DXSDK_DIR: deps\microsoft-directx-sdk\
 
 jobs:
-  build:
+  regular-build:
+    if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/v')
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Build Special K
-      working-directory: ${{ github.workspace }}
-      run: msbuild /m /p:Configuration="${{env.SPECIAL_K_BUILD_CONFIG}}" /p:Platform="${{env.SPECIAL_K_PLATFORM}}" /p:OutDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" "${{env.SPECIAL_K_SOLUTION}}"
+      - name: Build Special K
+        working-directory: ${{ github.workspace }}
+        run: msbuild /m /t:SpecialK /p:Configuration="${{env.SPECIAL_K_BUILD_CONFIG}}" /p:Platform="${{env.SPECIAL_K_PLATFORM}}" /p:OutDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" /p:BuildProjectReferences=false "${{env.SPECIAL_K_SOLUTION}}"
       
-    - name: Build TZF
-      working-directory: ${{ github.workspace }}
-      run: msbuild /m /p:Configuration="${{env.TZF_BUILD_CONFIG}}" /p:Platform="${{env.TZF_PLATFORM}}" /p:TalesOfZestiriaDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" "${{env.TZF_SOLUTION}}"
+      - name: Build TZF
+        working-directory: ${{ github.workspace }}
+        run: msbuild /m /p:Configuration="${{env.TZF_BUILD_CONFIG}}" /p:Platform="${{env.TZF_PLATFORM}}" /p:TalesOfZestiriaDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" "${{env.TZF_SOLUTION}}"
+
+  release-build:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build Special K
+        working-directory: ${{ github.workspace }}
+        run: msbuild /m /t:SpecialK /p:Configuration="${{env.SPECIAL_K_BUILD_CONFIG}}" /p:Platform="${{env.SPECIAL_K_PLATFORM}}" /p:OutDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" /p:BuildProjectReferences=false "${{env.SPECIAL_K_SOLUTION}}"
       
+      - name: Build TZF
+        working-directory: ${{ github.workspace }}
+        run: msbuild /m /p:Configuration="${{env.TZF_BUILD_CONFIG}}" /p:Platform="${{env.TZF_PLATFORM}}" /p:TalesOfZestiriaDir="${{ github.workspace }}\${{env.BIN_DIR}}" /p:DXSDK_DIR="${{ github.workspace }}\${{env.DXSDK_DIR}}" /p:TZF_RELEASE_BUILD=1 "${{env.TZF_SOLUTION}}"
+        
+      - name: Copy binaries to distribution folder
+        shell: pwsh
+        run: |
+          cd "${{env.BIN_DIR}}"
+          Copy-Item -Path "tzfix.dll", "tzfix.pdb", "d3d9.dll", "d3d9.pdb" -Destination "../dist/" -Force
+
+      - uses: ksm2/archive-action@v1
+        with:
+          root-directory: ${{ env.BIN_DIR }}
+          format: "zip"
+          name: "tzf-${{ github.ref_name }}"
+          
+      - name: Get changes between tags
+        id: changes
+        uses: simbo/changes-between-tags-action@v1
+        with:
+          tag-pattern: '^(v?[0-9]+\.[0-9]+(.*)|tzf_[\w]+)?$'
+          
+      - uses: ncipollo/release-action@v1.14.0
+        with:
+          token: ${{ secrets.GH_PAT }}
+          artifactErrorsFailBuild: true
+          artifacts: "tzf-${{ github.ref_name }}.zip"
+          name: "Tales of Vesperia \"Fix\" ${{ github.ref_name }}"
+          body: "${{ steps.changes.outputs.changes }}"
