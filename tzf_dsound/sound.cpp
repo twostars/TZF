@@ -1,4 +1,4 @@
-/**
+﻿/**
  * This file is part of Tales of Zestiria "Fix".
  *
  * Tales of Zestiria "Fix" is free software : you can redistribute it
@@ -306,19 +306,25 @@ DirectSoundCreate_Detour (_In_opt_   LPCGUID        pcGuidDevice,
   if (SUCCEEDED (ret)) {
     void** vftable = *(void***)*ppDS;
 
-    TZF_CreateFuncHook ( L"IDirectSound::GetSpeakerConfig",
-                         vftable [8],
-                         DSound_GetSpeakerConfig,
-              (LPVOID *)&DSound_GetSpeakerConfig_Original );
+    if (DSound_GetSpeakerConfig_Original == nullptr)
+    {
+      TZF_CreateFuncHook ( L"IDirectSound::GetSpeakerConfig",
+                           vftable [8],
+                           DSound_GetSpeakerConfig,
+                (LPVOID *)&DSound_GetSpeakerConfig_Original );
 
-    TZF_EnableHook (vftable [8]);
+      TZF_EnableHook (vftable [8]);
+    }
 
-    TZF_CreateFuncHook ( L"IDirectSound::SetSpeakerConfig",
-                         vftable [9],
-                         DSound_SetSpeakerConfig,
-              (LPVOID *)&DSound_SetSpeakerConfig_Original );
+    if (DSound_SetSpeakerConfig_Original == nullptr)
+    {
+      TZF_CreateFuncHook ( L"IDirectSound::SetSpeakerConfig",
+                           vftable [9],
+                           DSound_SetSpeakerConfig,
+                (LPVOID *)&DSound_SetSpeakerConfig_Original );
 
-    TZF_EnableHook (vftable [9]);
+      TZF_EnableHook (vftable [9]);
+    }
 
     DWORD dwSpeaker;
 
@@ -653,19 +659,25 @@ IMMDevice_Activate_Detour (IMMDevice    *This,
 
       void** vftable = *(void***)*ppAudioClient;
 
-      TZF_CreateFuncHook ( L"IAudioClient::Initialize",
-                           vftable [3],
-                           IAudioClient_Initialize_Detour,
-                (LPVOID *)&IAudioClient_Initialize_Original );
+      if (IAudioClient_Initialize_Original == nullptr)
+      {
+        TZF_CreateFuncHook ( L"IAudioClient::Initialize",
+                             vftable [3],
+                             IAudioClient_Initialize_Detour,
+                  (LPVOID *)&IAudioClient_Initialize_Original );
 
-      TZF_EnableHook (vftable [3]);
+        TZF_EnableHook (vftable [3]);
+      }
 
-      TZF_CreateFuncHook ( L"IAudioClient::GetMixFormat",
-                           vftable [8],
-                           IAudioClient_GetMixFormat_Detour,
-                (LPVOID *)&IAudioClient_GetMixFormat_Original );
+      if (IAudioClient_GetMixFormat_Original == nullptr)
+      {
+        TZF_CreateFuncHook ( L"IAudioClient::GetMixFormat",
+                             vftable [8],
+                             IAudioClient_GetMixFormat_Detour,
+                  (LPVOID *)&IAudioClient_GetMixFormat_Original );
 
-      TZF_EnableHook (vftable [8]);
+        TZF_EnableHook (vftable [8]);
+      }
 
       g_pAudioDev = This;
 
@@ -706,12 +718,15 @@ CoCreateInstance_Detour (_In_     REFCLSID    rclsid,
     if (SUCCEEDED (hr2) && pDev != nullptr) {
       void** vftable = *(void***)*&pDev;
 
-      TZF_CreateFuncHook ( L"IMMDevice::Activate",
-                           vftable [3],
-                           IMMDevice_Activate_Detour,
-                (LPVOID *)&IMMDevice_Activate_Original );
+      if (IMMDevice_Activate_Original == nullptr)
+      {
+        TZF_CreateFuncHook ( L"IMMDevice::Activate",
+                             vftable [3],
+                             IMMDevice_Activate_Detour,
+                  (LPVOID *)&IMMDevice_Activate_Original );
 
-      TZF_EnableHook (vftable [3]);
+        TZF_EnableHook (vftable [3]);
+      }
 
       pDev->Release ();
     }
